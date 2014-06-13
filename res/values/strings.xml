@@ -6,6 +6,7 @@
     <string name="menu_settings">Settings</string>
     <string-array name="ip_array">
         <item >222.200.185.43</item>
+        <item >192.168.164.1</item>
     </string-array>
 
 </resources>
