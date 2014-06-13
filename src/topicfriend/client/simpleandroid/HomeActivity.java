@@ -6,7 +6,11 @@ import java.util.HashMap;
 import topicfriend.netmessage.data.MessageInfo;
 import topicfriend.netmessage.data.UserInfo;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -18,6 +22,7 @@ public class HomeActivity extends Activity
 	private TextView m_textSignature;
 	private TextView m_textIcon;
 	private ListView m_listFriend;
+	private Button m_buttonShowTopic;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -25,12 +30,15 @@ public class HomeActivity extends Activity
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.activity_home);
 		
+		//bind UI
 		m_textUserName=(TextView)this.findViewById(R.id.text_user_name);
 		m_textSex=(TextView)this.findViewById(R.id.text_sex);
 		m_textSignature=(TextView)this.findViewById(R.id.text_signature);
 		m_textIcon=(TextView)this.findViewById(R.id.text_icon);
 		m_listFriend=(ListView)this.findViewById(R.id.list_friend);
+		m_buttonShowTopic=(Button)this.findViewById(R.id.button_show_topic);
 		
+		//init UI
 		UserInfo myInfo=AccountManager.getInstance().getMyInfo();
 		m_textUserName.setText(myInfo.getName());
 		m_textSex.setText(""+myInfo.getSex());
@@ -38,6 +46,27 @@ public class HomeActivity extends Activity
 		m_textIcon.setText(myInfo.getIcon());
 		
 		updateFriendListView();
+		
+		//create listener
+		m_listFriend.setOnItemClickListener(new AdapterView.OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3)
+			{
+				Intent intent=new Intent(HomeActivity.this,ChatFriendActivity.class);
+				intent.putExtra("index", arg2);
+				HomeActivity.this.startActivity(intent);
+			}
+		});
+		m_buttonShowTopic.setOnClickListener(new View.OnClickListener()
+		{
+			@Override
+			public void onClick(View v)
+			{
+				Intent intent=new Intent(HomeActivity.this,ShowTopicActivity.class);
+				HomeActivity.this.startActivity(intent);
+			}
+		});
 	}
 	
 	private void updateFriendListView()

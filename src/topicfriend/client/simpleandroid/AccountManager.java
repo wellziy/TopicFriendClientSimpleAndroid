@@ -5,11 +5,13 @@ import java.util.ArrayList;
 import topicfriend.netmessage.data.MessageInfo;
 import topicfriend.netmessage.data.TopicInfo;
 import topicfriend.netmessage.data.UserInfo;
+import topicfriend.network.Network;
 
 public class AccountManager
 {
 	private static AccountManager s_instance=null;
 	
+	private int m_connection;
 	private UserInfo m_myInfo;
 	private ArrayList<UserInfo> m_friendInfoList;
 	private ArrayList<MessageInfo> m_unreadMessageList;
@@ -31,7 +33,7 @@ public class AccountManager
 		s_instance=null;
 	}
 	
-	public void init(UserInfo myInfo,ArrayList<UserInfo> friendInfoList,ArrayList<MessageInfo> unreadMessageList,ArrayList<TopicInfo> topicList)
+	public void initAccount(UserInfo myInfo,ArrayList<UserInfo> friendInfoList,ArrayList<MessageInfo> unreadMessageList,ArrayList<TopicInfo> topicList)
 	{
 		m_myInfo=myInfo;
 		m_friendInfoList=friendInfoList;
@@ -69,10 +71,30 @@ public class AccountManager
 		return res;
 	}
 	
+	public ArrayList<TopicInfo> getTopicList()
+	{
+		return m_topicList;
+	}
+	
+	public int getConnection()
+	{
+		return m_connection;
+	}
+	
+	public void setConnection(int connection)
+	{
+		m_connection=connection;
+	}
+	
+	public boolean hasConnectedServer()
+	{
+		return m_connection!=Network.NULL_CONNECTION;
+	}
+	
 	/////////////////////////////////
 	//private
 	private AccountManager()
 	{
-		
+		m_connection=Network.NULL_CONNECTION;
 	}
 }

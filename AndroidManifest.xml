@@ -24,6 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity"></activity>
+        <activity android:name=".ChatFriendActivity"></activity>
+        <activity android:name=".ShowTopicActivity"></activity>
     </application>
 
 </manifest>

@@ -38,7 +38,6 @@ public class MainActivity extends Activity
 	private RadioButton m_radioMale;
 	private RadioButton m_radioFemale;
 	private Button m_buttonRegister;
-	private int m_connection;
 	private ProgressDialog m_connectDialog;
 	
 	private Handler m_handler=new Handler();
@@ -79,9 +78,6 @@ public class MainActivity extends Activity
 		m_radioFemale=(RadioButton)this.findViewById(R.id.radio_female);
 		m_buttonRegister=(Button)this.findViewById(R.id.button_register);
 		
-		//init connection to null
-		m_connection=Network.NULL_CONNECTION;
-		
 		//create dialog for connecting server
 		m_connectDialog=new ProgressDialog(this);
 		m_connectDialog.setTitle("Hint");
@@ -109,7 +105,7 @@ public class MainActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				if(hasConnectedServer())
+				if(AccountManager.getInstance().hasConnectedServer())
 				{
 					String userName=m_editUserName.getText().toString();
 					String password=m_editPassword.getText().toString();
@@ -123,7 +119,7 @@ public class MainActivity extends Activity
 			@Override
 			public void onClick(View v)
 			{
-				if(hasConnectedServer())
+				if(AccountManager.getInstance().hasConnectedServer())
 				{
 					String userName=m_editUserName.getText().toString();
 					String password=m_editPassword.getText().toString();
@@ -137,6 +133,7 @@ public class MainActivity extends Activity
 	@Override
 	protected void onDestroy() 
 	{
+		AccountManager.getInstance().purgeInstance();
 		NetMessageReceiver.getInstance().purgeInstance();
 		//destroy the network
 		Network.destroyNetwork();
@@ -149,11 +146,6 @@ public class MainActivity extends Activity
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
-	}
-	
-	private boolean hasConnectedServer()
-	{
-		return m_connection!=Network.NULL_CONNECTION;
 	}
 	
 	private void showToast(String text)
@@ -170,7 +162,8 @@ public class MainActivity extends Activity
 			{
 				try
 				{
-					m_connection=Network.connectHostPort(hostIP, port, 1000);
+					int connection=Network.connectHostPort(hostIP, port, 1000);
+					AccountManager.getInstance().setConnection(connection);
 				} 
 				catch (IOException e)
 				{
@@ -182,7 +175,7 @@ public class MainActivity extends Activity
 					@Override
 					public void run() 
 					{
-						if(hasConnectedServer())
+						if(AccountManager.getInstance().hasConnectedServer())
 						{
 							showToast("connect server succeed");
 						}
@@ -201,7 +194,7 @@ public class MainActivity extends Activity
 	private void doRegister(String userName,String password,int sex)
 	{
 		NetMessageRegister msgRegister=new NetMessageRegister(userName, password, sex);
-		Network.sendDataOne(msgRegister.toByteArrayBuffer(), m_connection);
+		Network.sendDataOne(msgRegister.toByteArrayBuffer(), AccountManager.getInstance().getConnection());
 		NetMessageReceiver.getInstance().setMessageHandler(NetMessageID.LOGIN_SUCCEED, new NetMessageHandler()
 		{
 			@Override
@@ -225,7 +218,7 @@ public class MainActivity extends Activity
 	private void doLogin(String userName,String password)
 	{
 		NetMessageLogin msgLogin=new NetMessageLogin(userName, password);
-		Network.sendDataOne(msgLogin.toByteArrayBuffer(), m_connection);
+		Network.sendDataOne(msgLogin.toByteArrayBuffer(), AccountManager.getInstance().getConnection());
 		NetMessageReceiver.getInstance().setMessageHandler(NetMessageID.LOGIN_SUCCEED, new NetMessageHandler()
 		{
 			@Override
@@ -251,7 +244,7 @@ public class MainActivity extends Activity
 		ArrayList<UserInfo> friendInfoList=msgLoginSucceed.getFriendInfoList();
 		ArrayList<MessageInfo> unreadMessageList=msgLoginSucceed.getUnreadMessageList();
 		ArrayList<TopicInfo> topicList=msgLoginSucceed.getTopicList();
-		AccountManager.getInstance().init(myInfo,friendInfoList,unreadMessageList,topicList);
+		AccountManager.getInstance().initAccount(myInfo,friendInfoList,unreadMessageList,topicList);
 		
 		Intent intent=new Intent(this,HomeActivity.class);
 		this.startActivity(intent);
