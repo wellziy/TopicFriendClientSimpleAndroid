@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+    
+        <TextView
+            android:id="@+id/textView1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="userName:" />
+
+        <TextView
+            android:id="@+id/text_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserName" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sex:" />
+
+        <TextView
+            android:id="@+id/text_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="sex" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Signature:" />
+
+        <TextView
+            android:id="@+id/text_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="signature" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Icon:" />
+
+        <TextView
+            android:id="@+id/text_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="icon" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lastest Message:" />
+
+        <TextView
+            android:id="@+id/text_lastest_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lastestMessage" />
+        
+</LinearLayout>
